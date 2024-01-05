@@ -30,10 +30,11 @@ app.post("/todo", async function(req, res) {
 })
 
 app.get("/todos", async function(req, res) {
-    // const todos = await todo.find({});
+    const todos = await todo.find({});
+    console.log("tasks>", todos);
 
     res.json({
-        todos: []
+        todos: todos
     })
 
 })
@@ -48,7 +49,8 @@ app.put("/completed", async function(req, res) {
         return;
     }
 
-    await todo.update({
+    console.log("req.body>", req.body);
+    await todo.updateOne({
         _id: req.body.id
     }, {
       completed: true  
