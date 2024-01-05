@@ -1,24 +1,26 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react'
 import './App.css'
 import { CreateTodo } from './components/CreateTodo'
 import { Todos } from './components/Todos'
 
-// useEffect hook
 function App() {
   const [todos, setTodos] = useState([]);
+  const [refreshKey, setRefreshKey] = useState(0);
 
-  // fetch("http://localhost:3000/todos")
-  //   .then(async function(res) {
-  //     const json = await res.json();
-  //     setTodos(json.todos);
-  //   })
+  useEffect(()=>{
+    const getTodos = ()=>{
+      fetch("http://localhost:3000/todos")
+        .then(async function(res) {
+          const json = await res.json();
+          setTodos(json.todos);
+        })
+    }
+    getTodos();
+  },[refreshKey]);
 
   return (
-    <div>
-      <CreateTodo></CreateTodo>
-      <Todos todos={todos}></Todos>
+    <div className='d-flex align-items-center m-5 justify-content-center'>
+      <Todos todos={todos} setRefreshKey={setRefreshKey}></Todos>
     </div>
   )
 }
